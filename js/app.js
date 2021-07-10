@@ -34,8 +34,24 @@ function leerDatosCurso(curso) {
     id: curso.querySelector("a").getAttribute("data-id"),
     cantidad: 1,
   };
-  //Agrega elementos al arreglo de carrito
-  articulosCarrito = [...articulosCarrito, infoCurso];
+
+  //Revisa si un elemento ya existe en el carrito
+  const existe = articulosCarrito.some((curso) => curso.id === infoCurso.id);
+  if (existe) {
+    //Actualizamos la cantidad
+    const cursos = articulosCarrito.map((curso) => {
+      if (curso.id === infoCurso.id) {
+        curso.cantidad++;
+        return curso;
+      } else {
+        return curso;
+      }
+    });
+    articulosCarrito = [...cursos];
+  } else {
+    //Agrega elementos al arreglo de carrito
+    articulosCarrito = [...articulosCarrito, infoCurso];
+  }
 
   console.log(articulosCarrito);
   carritoHTML();
@@ -44,12 +60,12 @@ function leerDatosCurso(curso) {
 //Muestra el carrito de compras en el HTML
 
 function carritoHTML() {
-    //limpiar el HTML
-    limpiarHTML();
+  //limpiar el HTML
+  limpiarHTML();
 
-    //Recorre el carrito y genera el HTML
+  //Recorre el carrito y genera el HTML
   articulosCarrito.forEach((curso) => {
-      const{imagen, titulo, precio, cantidad, id} = curso; //Destructuring
+    const { imagen, titulo, precio, cantidad, id } = curso; //Destructuring
     const row = document.createElement("tr");
     row.innerHTML = `
             <td>
@@ -69,12 +85,12 @@ function carritoHTML() {
 }
 
 //Elimina los cursos del tbody
-function limpiarHTML(){
-    //Forma lenta
-    // contenedorCarrito.innerHTML = "";
+function limpiarHTML() {
+  //Forma lenta
+  // contenedorCarrito.innerHTML = "";
 
-    //Forma mas rapida de limpiar el HTML
-    while(contenedorCarrito.firstChild){
-        contenedorCarrito.removeChild(contenedorCarrito.firstChild);
-    }
+  //Forma mas rapida de limpiar el HTML
+  while (contenedorCarrito.firstChild) {
+    contenedorCarrito.removeChild(contenedorCarrito.firstChild);
+  }
 }
